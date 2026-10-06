@@ -15,6 +15,13 @@ import { siteData } from '@/lib/siteData';
 export const metadata = {
   title: "Contact Capitol SR22 Insurance Austin | (737) 309-4205",
   description: "Contact Capitol SR22 Insurance Austin at +17373094205 for immediate support, free quote comparison, and rapid electronic Texas DPS filing.",
+  alternates: {
+    canonical: "/contact",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function ContactPage() {

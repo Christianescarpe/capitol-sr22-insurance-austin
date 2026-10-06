@@ -8,6 +8,13 @@ import { siteData } from '@/lib/siteData';
 export const metadata = {
   title: "Texas SR-22 Insurance Blog & Guides | Capitol SR22 Insurance Austin",
   description: "Comprehensive guides, Texas DPS filing rules, reinstatement advice, cost breakdowns, and expert tips on SR22 and FR44 insurance.",
+  alternates: {
+    canonical: "/blog",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function BlogIndexPage() {

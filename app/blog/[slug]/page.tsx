@@ -36,6 +36,13 @@ export async function generateMetadata({ params }: BlogPostProps) {
   return {
     title: blog.seoTitle,
     description: blog.metaDesc,
+    alternates: {
+      canonical: `/blog/${blog.slug}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 

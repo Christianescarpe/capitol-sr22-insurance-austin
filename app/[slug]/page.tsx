@@ -35,6 +35,13 @@ export async function generateMetadata({ params }: PageProps) {
   return {
     title: page.seoTitle,
     description: page.metaDesc,
+    alternates: {
+      canonical: `/${page.slug}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 

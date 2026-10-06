@@ -17,6 +17,13 @@ import { parseSheetContent } from '@/lib/contentParser';
 export const metadata = {
   title: siteData.home.seoTitle,
   description: siteData.home.metaDesc,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function HomePage() {
