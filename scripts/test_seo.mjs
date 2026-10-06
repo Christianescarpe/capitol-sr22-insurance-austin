@@ -1,31 +1,38 @@
-import http from 'http';
+async function verifyLive() {
+  const sitemapUrl = 'https://sr22insuranceaustintx.site/sitemap.xml';
+  const robotsUrl = 'https://sr22insuranceaustintx.site/robots.txt';
 
-function get(path) {
-  return new Promise((resolve) => {
-    http.get('http://localhost:3000' + path, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        resolve({ status: res.statusCode, headers: res.headers, data });
-      });
-    });
+  console.log('=== Checking /robots.txt ===');
+  const rRes = await fetch(robotsUrl, {
+    redirect: 'manual',
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' }
   });
+  console.log('Status:', rRes.status, rRes.statusText);
+  console.log('Content-Type:', rRes.headers.get('content-type'));
+  console.log('X-Robots-Tag:', rRes.headers.get('x-robots-tag'));
+  const rText = await rRes.text();
+  console.log('Content:\n' + rText);
+
+  console.log('=== Checking /sitemap.xml ===');
+  const sRes = await fetch(sitemapUrl, {
+    redirect: 'manual',
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' }
+  });
+  console.log('Status:', sRes.status, sRes.statusText);
+  console.log('Content-Type:', sRes.headers.get('content-type'));
+  console.log('X-Robots-Tag:', sRes.headers.get('x-robots-tag'));
+  const sText = await sRes.text();
+  console.log('Length:', sText.length);
+  console.log('Valid XML header:', sText.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
+  
+  const locs = [...sText.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+  console.log('Total URLs found in sitemap:', locs.length);
+  const invalidDomain = locs.filter(u => !u.startsWith('https://sr22insuranceaustintx.site'));
+  console.log('Invalid domain URLs count:', invalidDomain.length);
+  if (invalidDomain.length > 0) {
+    console.error('Invalid URLs:', invalidDomain);
+  } else {
+    console.log('All URLs strictly use https://sr22insuranceaustintx.site!');
+  }
 }
-
-const robotsRes = await get('/robots.txt');
-console.log('=== ROBOTS.TXT (status ' + robotsRes.status + ') ===');
-console.log(robotsRes.data);
-
-const sitemapRes = await get('/sitemap.xml');
-console.log('\n=== SITEMAP.XML (status ' + sitemapRes.status + ') ===');
-console.log('Total URLs count:', (sitemapRes.data.match(/<loc>/g) || []).length);
-console.log('Sample snippet:\n', sitemapRes.data.slice(0, 500));
-
-const homeRes = await get('/');
-console.log('\n=== HOME HEAD CHECK ===');
-const canonicalMatch = homeRes.data.match(/<link[^>]*rel=["']canonical["'][^>]*>/i);
-console.log('Canonical tag:', canonicalMatch ? canonicalMatch[0] : 'NOT FOUND');
-const metaGoogle = homeRes.data.match(/<meta[^>]*google-site-verification[^>]*>/i);
-console.log('Google verification tag:', metaGoogle ? metaGoogle[0] : 'NOT FOUND');
-const robotsTag = homeRes.data.match(/<meta[^>]*robots[^>]*>/i);
-console.log('Robots tag:', robotsTag ? robotsTag[0] : 'NOT FOUND');
+verifyLive();
