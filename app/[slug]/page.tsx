@@ -32,15 +32,23 @@ export async function generateMetadata({ params }: PageProps) {
   const page = getPageBySlug(slug);
   if (!page) return {};
 
+  const fullUrl = `https://www.sr22insuranceaustintx.site/${page.slug}`;
+
   return {
     title: page.seoTitle,
     description: page.metaDesc,
     alternates: {
-      canonical: `/${page.slug}`,
+      canonical: fullUrl,
     },
     robots: {
       index: true,
       follow: true,
+    },
+    openGraph: {
+      title: page.seoTitle,
+      description: page.metaDesc,
+      url: fullUrl,
+      type: "website",
     },
   };
 }
@@ -74,8 +82,64 @@ export default async function ServiceOrLocationPage({ params }: PageProps) {
     'sr22-vs-fr44-texas-difference': '/images/insurance/car-insurance-concept-with-toy-car-and-umbrella-2026-01-08-08-12-26-utc.webp',
   };
 
+  const fullUrl = `https://www.sr22insuranceaustintx.site/${page.slug}`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.sr22insuranceaustintx.site/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": page.title,
+            "item": fullUrl
+          }
+        ]
+      },
+      isService
+        ? {
+            "@type": "Service",
+            "name": page.title,
+            "description": page.metaDesc,
+            "provider": {
+              "@type": "InsuranceAgency",
+              "name": "Capitol SR22 Insurance Austin",
+              "telephone": "+1-737-309-4205",
+              "url": "https://www.sr22insuranceaustintx.site"
+            },
+            "areaServed": {
+              "@type": "State",
+              "name": "Texas"
+            }
+          }
+        : {
+            "@type": "LocalBusiness",
+            "name": `Capitol SR22 Insurance - ${page.title}`,
+            "description": page.metaDesc,
+            "telephone": "+1-737-309-4205",
+            "url": fullUrl,
+            "areaServed": {
+              "@type": "City",
+              "name": page.keyword.replace(/^SR22 Insurance\s+/i, '')
+            }
+          }
+    ]
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       
       {/* 1. HERO SECTION (Dark Navy matching design with ONLY Sheet Content) */}
       <section className="relative bg-[#0d1527] text-white pt-12 pb-20 sm:pt-20 sm:pb-28 overflow-hidden">

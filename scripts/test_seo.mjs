@@ -1,6 +1,6 @@
 async function verifyLive() {
-  const sitemapUrl = 'https://sr22insuranceaustintx.site/sitemap.xml';
-  const robotsUrl = 'https://sr22insuranceaustintx.site/robots.txt';
+  const sitemapUrl = 'https://www.sr22insuranceaustintx.site/sitemap.xml';
+  const robotsUrl = 'https://www.sr22insuranceaustintx.site/robots.txt';
 
   console.log('=== Checking /robots.txt ===');
   const rRes = await fetch(robotsUrl, {
@@ -27,12 +27,12 @@ async function verifyLive() {
   
   const locs = [...sText.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
   console.log('Total URLs found in sitemap:', locs.length);
-  const invalidDomain = locs.filter(u => !u.startsWith('https://sr22insuranceaustintx.site'));
+  const invalidDomain = locs.filter(u => !u.startsWith('https://www.sr22insuranceaustintx.site'));
   console.log('Invalid domain URLs count:', invalidDomain.length);
   if (invalidDomain.length > 0) {
     console.error('Invalid URLs:', invalidDomain);
   } else {
-    console.log('All URLs strictly use https://sr22insuranceaustintx.site!');
+    console.log('All URLs strictly use https://www.sr22insuranceaustintx.site!');
   }
 }
 verifyLive();

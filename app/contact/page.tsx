@@ -16,19 +16,65 @@ export const metadata = {
   title: "Contact Capitol SR22 Insurance Austin | (737) 309-4205",
   description: "Contact Capitol SR22 Insurance Austin at +17373094205 for immediate support, free quote comparison, and rapid electronic Texas DPS filing.",
   alternates: {
-    canonical: "/contact",
+    canonical: "https://www.sr22insuranceaustintx.site/contact",
   },
   robots: {
     index: true,
     follow: true,
+  },
+  openGraph: {
+    title: "Contact Capitol SR22 Insurance Austin | (737) 309-4205",
+    description: "Contact Capitol SR22 Insurance Austin at +17373094205 for immediate support, free quote comparison, and rapid electronic Texas DPS filing.",
+    url: "https://www.sr22insuranceaustintx.site/contact",
+    type: "website",
   },
 };
 
 export default function ContactPage() {
   const { services, locations, company } = siteData;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.sr22insuranceaustintx.site/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Contact",
+            "item": "https://www.sr22insuranceaustintx.site/contact"
+          }
+        ]
+      },
+      {
+        "@type": "ContactPage",
+        "@id": "https://www.sr22insuranceaustintx.site/contact#webpage",
+        "url": "https://www.sr22insuranceaustintx.site/contact",
+        "name": "Contact Capitol SR22 Insurance Austin",
+        "description": "Contact Capitol SR22 Insurance Austin at +17373094205 for immediate support and quote comparison.",
+        "mainEntity": {
+          "@type": "InsuranceAgency",
+          "name": "Capitol SR22 Insurance Austin",
+          "telephone": "+1-737-309-4205",
+          "url": "https://www.sr22insuranceaustintx.site"
+        }
+      }
+    ]
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       
       {/* 1. HERO SECTION (Dark Navy matching Design Mockup) */}
       <section className="relative bg-[#0d1527] text-white pt-12 pb-20 sm:pt-20 sm:pb-28 overflow-hidden">

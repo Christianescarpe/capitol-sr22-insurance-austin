@@ -33,15 +33,23 @@ export async function generateMetadata({ params }: BlogPostProps) {
   const blog = getBlogBySlug(slug);
   if (!blog) return {};
 
+  const fullUrl = `https://www.sr22insuranceaustintx.site/blog/${blog.slug}`;
+
   return {
     title: blog.seoTitle,
     description: blog.metaDesc,
     alternates: {
-      canonical: `/blog/${blog.slug}`,
+      canonical: fullUrl,
     },
     robots: {
       index: true,
       follow: true,
+    },
+    openGraph: {
+      title: blog.seoTitle,
+      description: blog.metaDesc,
+      url: fullUrl,
+      type: "article",
     },
   };
 }
@@ -71,9 +79,73 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
     'top-sr22-insurance-mistakes-texas': '/images/insurance/woman-inspecting-damage-car-after-auto-accident-2026-03-27-03-00-53-utc.webp',
   };
   const heroImg = blogImageMap[blog.slug] || '/images/blog-1.webp';
+  const fullUrl = `https://www.sr22insuranceaustintx.site/blog/${blog.slug}`;
+  const cleanBlogContent = blog.content.replace(/<h1\b[^>]*>[\s\S]*?<\/h1>/i, '').trim();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.sr22insuranceaustintx.site/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Texas SR-22 Guides",
+            "item": "https://www.sr22insuranceaustintx.site/blog"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": blog.title,
+            "item": fullUrl
+          }
+        ]
+      },
+      {
+        "@type": "BlogPosting",
+        "@id": `${fullUrl}#article`,
+        "headline": blog.title,
+        "description": blog.metaDesc,
+        "url": fullUrl,
+        "image": `https://www.sr22insuranceaustintx.site${heroImg}`,
+        "datePublished": "2026-01-15T08:00:00+00:00",
+        "dateModified": "2026-10-06T12:00:00+00:00",
+        "inLanguage": "en-US",
+        "author": {
+          "@type": "Organization",
+          "name": "Capitol SR22 Insurance Austin",
+          "url": "https://www.sr22insuranceaustintx.site"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Capitol SR22 Insurance Austin",
+          "url": "https://www.sr22insuranceaustintx.site",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.sr22insuranceaustintx.site/logo.png"
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": fullUrl
+        }
+      }
+    ]
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       
       {/* Blog Article Header (Dark Navy) */}
       <section className="bg-[#0d1527] text-white pt-12 pb-16 sm:pt-20 sm:pb-20 relative overflow-hidden">
@@ -133,7 +205,7 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
             {/* Primary Article Content */}
             <div className="lg:col-span-8 space-y-8">
               <div className="bg-slate-50/70 p-6 sm:p-10 rounded-3xl border border-slate-200/80 shadow-sm">
-                <ContentRenderer content={blog.content} />
+                <ContentRenderer content={cleanBlogContent} />
               </div>
 
               {/* In-article Phone CTA Card */}

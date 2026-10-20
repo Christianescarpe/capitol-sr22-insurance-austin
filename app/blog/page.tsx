@@ -9,11 +9,17 @@ export const metadata = {
   title: "Texas SR-22 Insurance Blog & Guides | Capitol SR22 Insurance Austin",
   description: "Comprehensive guides, Texas DPS filing rules, reinstatement advice, cost breakdowns, and expert tips on SR22 and FR44 insurance.",
   alternates: {
-    canonical: "/blog",
+    canonical: "https://www.sr22insuranceaustintx.site/blog",
   },
   robots: {
     index: true,
     follow: true,
+  },
+  openGraph: {
+    title: "Texas SR-22 Insurance Blog & Guides | Capitol SR22 Insurance Austin",
+    description: "Comprehensive guides, Texas DPS filing rules, reinstatement advice, cost breakdowns, and expert tips on SR22 and FR44 insurance.",
+    url: "https://www.sr22insuranceaustintx.site/blog",
+    type: "website",
   },
 };
 
@@ -36,8 +42,31 @@ export default function BlogIndexPage() {
   const featured = blogs[0];
   const regularBlogs = blogs.slice(1);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.sr22insuranceaustintx.site/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Texas SR-22 Guides & Blog",
+        "item": "https://www.sr22insuranceaustintx.site/blog"
+      }
+    ]
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       
       {/* Blog Hero (Dark navy) */}
       <section className="bg-[#0d1527] text-white pt-12 pb-16 sm:pt-20 sm:pb-20">

@@ -8,8 +8,9 @@ const projectRoot = path.resolve(__dirname, '..');
 
 const data = JSON.parse(fs.readFileSync(path.join(projectRoot, 'data', 'siteData.json'), 'utf8'));
 
-const BASE = 'https://sr22insuranceaustintx.site';
-const TODAY = '2026-10-06';
+// Canonical preferred domain with WWW and HTTPS
+const BASE = 'https://www.sr22insuranceaustintx.site';
+const TODAY = new Date().toISOString().split('T')[0];
 
 const urls = [
   { url: `${BASE}/`, priority: '1.0', changefreq: 'daily' },
@@ -39,11 +40,11 @@ xmlLines.push('');
 
 const sitemapContent = xmlLines.join('\n');
 fs.writeFileSync(path.join(projectRoot, 'public', 'sitemap.xml'), sitemapContent, 'utf8');
-console.log(`Generated public/sitemap.xml with ${urls.length} URLs`);
+console.log(`Generated public/sitemap.xml with ${urls.length} URLs using base ${BASE}`);
 
 const robotsContent = `User-agent: *
 Allow: /
-Sitemap: https://sr22insuranceaustintx.site/sitemap.xml
+Sitemap: https://www.sr22insuranceaustintx.site/sitemap.xml
 `;
 fs.writeFileSync(path.join(projectRoot, 'public', 'robots.txt'), robotsContent, 'utf8');
-console.log('Generated public/robots.txt');
+console.log('Generated public/robots.txt with canonical sitemap URL');

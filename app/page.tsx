@@ -18,11 +18,17 @@ export const metadata = {
   title: siteData.home.seoTitle,
   description: siteData.home.metaDesc,
   alternates: {
-    canonical: "/",
+    canonical: "https://www.sr22insuranceaustintx.site/",
   },
   robots: {
     index: true,
     follow: true,
+  },
+  openGraph: {
+    title: siteData.home.seoTitle,
+    description: siteData.home.metaDesc,
+    url: "https://www.sr22insuranceaustintx.site/",
+    type: "website",
   },
 };
 
